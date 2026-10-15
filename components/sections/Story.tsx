@@ -29,11 +29,12 @@ export function Story({ photos }: { photos: FlowerPhoto[] }) {
         <div className="lg:col-span-6 lg:pl-12 lg:pt-16">
           <div id="story-title"><SectionHeading eyebrow="Our story" title="Hala means sweetness." italic={["sweetness."]} /></div>
           <div className="mt-10 max-w-xl space-y-6 text-[16px] leading-[1.8] text-ink/75 sm:text-[17px]">
-            <Reveal><p>In Arabic, <em className="font-serif text-xl text-burgundy not-italic">hala</em> (<span lang="ar" dir="rtl" className="font-[family-name:var(--font-arabic)] text-xl text-burgundy">حلا</span>) is sweetness: the kind that lingers, like honey on a spoon, a kind word, or the first warm day of spring.</p></Reveal>
-            <Reveal delay={0.1}><p>Halaflora joins that word with <em className="font-serif text-xl text-burgundy not-italic">flora</em>, the flowers themselves. Together they carry the idea behind everything we make: a bouquet should never be an afterthought. It should feel like someone thought of you.</p></Reveal>
-            <Reveal delay={0.2}><p>So we arrange slowly. We choose each stem by hand, favour what is in season, and tie every bouquet the way we would for someone we love. Sweetness isn&apos;t an add-on here. It&apos;s the whole recipe.</p></Reveal>
+            <Reveal><p>In Arabic, <em className="font-serif text-xl text-burgundy not-italic">hala</em> (<span lang="ar" dir="rtl" className="font-[family-name:var(--font-arabic)] text-xl text-burgundy">حلا</span>) is sweetness: the kind that lingers, like honey on a spoon, a kind word, or the first warm day of spring. It&apos;s also my name, and when I started this shop, I wanted it to carry a little piece of me.</p></Reveal>
+            <Reveal delay={0.1}><p>So Halaflora joins my name with <em className="font-serif text-xl text-burgundy not-italic">flora</em>, the flowers themselves. Together they hold the idea behind everything we make: a bouquet should never be an afterthought. It should feel like someone thought of you.</p></Reveal>
+            <Reveal delay={0.2}><p>That&apos;s why we arrange slowly. We choose each stem by hand, favour what is in season, and tie every bouquet the way we would for someone we love. Sweetness isn&apos;t an add-on here. It&apos;s the whole recipe.</p></Reveal>
+            <Reveal delay={0.3}><p className="font-serif text-xl text-burgundy/60 italic">— Hala, founder</p></Reveal>
           </div>
-          <Reveal delay={0.3} className="mt-10 flex items-center gap-5">
+          <Reveal delay={0.4} className="mt-8 flex items-center gap-5">
             <LogoMark className="h-12 w-12 text-rose" strokeWidth={0.8} />
             <p className="font-serif text-2xl text-burgundy italic">The Sweetness of Every Bloom</p>
           </Reveal>
