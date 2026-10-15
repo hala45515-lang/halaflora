@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ivory: #faf5ec;
+  --color-cream: #f3eadb;
+  --color-blush: #f2d4ce;
+  --color-rose: #c98b8b;
+  --color-sage: #9aaa8c;
+  --color-moss: #56684f;
+  --color-burgundy: #5c1a2b;
+  --color-wine: #3a0f1b;
+  --color-ink: #2a1a1e;
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", system-ui, sans-serif;
+
+  --ease-bloom: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #faf5ec;
+  --foreground: #2a1a1e;
+}
+
+html {
+  background: var(--background);
+  color-scheme: light;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
+
+::selection {
+  background: var(--color-blush);
+  color: var(--color-burgundy);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-rose);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Subtle film grain over the whole page */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.1  0 0 0 0 0.12  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scroll-cue {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain::after,
+  .animate-spin-slow,
+  .animate-scroll-cue {
+    animation: none !important;
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 28s linear infinite;
+}
+.animate-scroll-cue {
+  animation: scroll-cue 2.2s var(--ease-bloom) infinite;
+}
+
+/* Custom cursor replaces the native one on fine pointers */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+.perspective { perspective: 1200px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }

@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Halaflora
 
-## Getting Started
+*The Sweetness of Every Bloom.* An editorial, boutique-florist storefront built with Next.js (App Router), TypeScript, Tailwind CSS, Framer Motion and Lenis.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # then add your Unsplash key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting your Unsplash key
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Create a free account at <https://unsplash.com/join>.
+2. Go to <https://unsplash.com/oauth/applications> and click **New Application**. Accept the API guidelines.
+3. Open the new app and copy the **Access Key** (not the Secret Key).
+4. Paste it into `.env.local`:
 
-## Learn More
+   ```
+   UNSPLASH_ACCESS_KEY=your_access_key
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+The key is only ever read on the server (`process.env`, no `NEXT_PUBLIC_` prefix), so it is never sent to the browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Rate limits
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Demo apps are limited to **50 requests/hour**. Halaflora is built to stay far below that:
 
-## Deploy on Vercel
+- One search request per flower type (`rose bouquet`, `peony`, `tulips`, `wildflowers`, `flower arrangement`, `ranunculus`, `dried flowers`) plus one for the hero: about **8 requests** in total.
+- Each response holds 20 photos and is shared by every page and section, so the shop, product pages and home page all reuse it.
+- Results are cached for **24 hours** with `use cache` (`lib/unsplash.ts`).
+- Failed requests (missing key, rate limit, network error) are cached for only a minute, and the site shows elegant illustrated placeholders in the meantime. Nothing crashes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+When you go to production, apply for **Production** access in the Unsplash dashboard to raise the limit. Photographer attribution ("Photo by X on Unsplash") is shown on images and listed under *Photo credits* in the footer, as the Unsplash guidelines require.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure
+
+```
+app/                    routes: /, /shop, /shop/[slug], OG image, icon
+components/             UI: Logo, Loader, Hero, Cursor, Cart, Navbar, Footer…
+components/sections/    home-page sections
+lib/unsplash.ts         typed, cached Unsplash client (server only)
+lib/bank.ts             shares photo pools across sections and products
+lib/products.ts         product catalogue (edit this to change the shop)
+```
+
+## Notes
+
+- Studio contact details, hours and social handles live in `lib/site.ts` (placeholders). FAQ answers in `components/contact/Faq.tsx` and the About page copy are sample text too.
+- Testimonials, the `@halaflora` Instagram link, social links and product data are sample content. Replace them with your own.
+- The cart is client-side (saved in `localStorage`). Checkout is a stub.
+- Animations respect `prefers-reduced-motion`.
+
+## Environment variables
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `UNSPLASH_ACCESS_KEY` | Recommended | Server-side Unsplash key. Without it the site shows illustrated placeholders. |
+| `NEXT_PUBLIC_SITE_URL` | Optional | Public origin, e.g. `https://halaflora.com`. Drives `metadataBase`, canonical URLs, Open Graph, `sitemap.xml` and `robots.txt`. Falls back to Vercel's production URL, then `http://localhost:3000`. |
+
+`.env.local` is git-ignored; `.env.example` lists every variable with empty values.
+
+## Deploying to Vercel
+
+1. **Push to GitHub** (see below) and sign in at <https://vercel.com>.
+2. **Add New → Project**, import the `halaflora` repository. Vercel detects Next.js; leave the build settings as they are.
+3. Under **Environment Variables**, add:
+   - `UNSPLASH_ACCESS_KEY` = your Unsplash Access Key
+   - `NEXT_PUBLIC_SITE_URL` = your final URL (e.g. `https://halaflora.com`, or the `*.vercel.app` URL until you have a domain)
+4. Click **Deploy**. The first build fetches about 12 Unsplash searches, which are cached for 24 hours and shared by every page.
+5. **Custom domain (optional):** Project → Settings → Domains, then update `NEXT_PUBLIC_SITE_URL` to match and redeploy so canonical and Open Graph URLs use it.
+6. **Before going live:** apply for *Production* access in the Unsplash dashboard (demo keys allow 50 requests/hour), replace the placeholder studio details in `lib/site.ts`, and review the sample copy (FAQ, testimonials, About).
+
+If a build ever runs without a working Unsplash key, pages are generated with placeholders and refresh themselves within a minute once the key works, so no redeploy is needed.
+
+Useful commands:
+
+```bash
+npm run build   # production build
+npm start       # serve the production build locally
+npm run lint
+npx tsc --noEmit
+```
