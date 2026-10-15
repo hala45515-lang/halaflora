@@ -104,11 +104,6 @@ html.lenis body {
   animation: scroll-cue 2.2s var(--ease-bloom) infinite;
 }
 
-/* Custom cursor replaces the native one on fine pointers */
-html.has-cursor,
-html.has-cursor * {
-  cursor: none !important;
-}
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }

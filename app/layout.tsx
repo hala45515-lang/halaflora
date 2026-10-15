@@ -6,7 +6,6 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { Loader } from "@/components/Loader";
 import { CartProvider } from "@/components/CartProvider";
 import { CartDrawer } from "@/components/CartDrawer";
-import { Cursor } from "@/components/Cursor";
 import { TransitionProvider } from "@/components/TransitionProvider";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -75,7 +74,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Loader />
             <TransitionProvider>{children}</TransitionProvider>
             <CartDrawer />
-            <Cursor />
           </CartProvider>
         </IntroProvider>
       </body>

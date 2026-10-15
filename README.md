@@ -40,7 +40,7 @@ When you go to production, apply for **Production** access in the Unsplash dashb
 
 ```
 app/                    routes: /, /shop, /shop/[slug], OG image, icon
-components/             UI: Logo, Loader, Hero, Cursor, Cart, Navbar, Footer…
+components/             UI: Logo, Loader, Hero, Cart, Navbar, Footer…
 components/sections/    home-page sections
 lib/unsplash.ts         typed, cached Unsplash client (server only)
 lib/bank.ts             shares photo pools across sections and products
