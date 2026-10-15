@@ -24,7 +24,8 @@ export default async function Home() {
   const bestsellers = BESTSELLERS.map((p) => ({ ...p, photos: bank.productPhotos(p).slice(0, 1) }));
   bank.reserve([background, ...bestsellers.map((b) => b.photos[0])]);
 
-  const arch = bank.take("peony", 1, "portrait")[0];
+  // A lush, full-frame pink peony (not a lone bloom on a white backdrop).
+  const arch = bank.takeBest("peony", "peony", { target: "#d9739a", maxL: 72 })[0];
   const collections = [bank.take("roses", 1, "portrait")[0], bank.take("wild", 1, "portrait")[0], bank.take("tulips", 1, "portrait")[0], bank.take("arrangement", 1, "portrait")[0]];
   const occasions = [
     bank.take("ranunculus", 1, "portrait")[0], // birthday

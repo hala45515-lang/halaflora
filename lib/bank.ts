@@ -67,10 +67,10 @@ export async function getBank() {
     /**
      * The best unused photo(s) for a subject, reserved on the way out. Scores alt text that
      * mentions `keyword`, on-topic and portrait shots, and (optionally) closeness to a target
-     * colour. `minL` drops dark photos (Lab lightness, 0-100) unless nothing lighter is left.
+     * colour. `minL` drops dark photos and `maxL` drops very light ones (Lab lightness, 0-100), unless nothing else is left.
      */
-    takeBest(key: PoolKey, keyword: string, opts: { n?: number; target?: string; minL?: number } = {}): FlowerPhoto[] {
-      const { n = 1, target, minL } = opts;
+    takeBest(key: PoolKey, keyword: string, opts: { n?: number; target?: string; minL?: number; maxL?: number } = {}): FlowerPhoto[] {
+      const { n = 1, target, minL, maxL } = opts;
       const kw = keyword.toLowerCase();
       const score = (p: FlowerPhoto) =>
         (p.alt.toLowerCase().includes(kw) ? 4 : 0) + (onTopic(p) ? 2 : 0) + (isPortrait(p) ? 1 : 0) - (target ? colorDistance(p.color, target) / 8 : 0);
@@ -78,6 +78,10 @@ export async function getBank() {
       if (minL !== undefined) {
         const light = candidates.filter((p) => p.placeholder || hexToLab(p.color)[0] >= minL);
         if (light.length) candidates = light;
+      }
+      if (maxL !== undefined) {
+        const rich = candidates.filter((p) => p.placeholder || hexToLab(p.color)[0] <= maxL);
+        if (rich.length) candidates = rich;
       }
       const picked = candidates.map((p, i) => ({ p, i })).sort((a, b) => score(b.p) - score(a.p) || a.i - b.i).slice(0, n).map((x) => x.p);
       picked.forEach((p) => used.add(p.id));
