@@ -8,6 +8,7 @@ import { Reveal, SectionHeading, Unmask, WordReveal } from "@/components/Reveal"
 import { Values } from "@/components/about/Values";
 import { Timeline } from "@/components/about/Timeline";
 import { getBank } from "@/lib/bank";
+import { LIVE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Our Story",
@@ -112,6 +113,13 @@ export default async function AboutPage() {
             <Reveal delay={0.45} className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <MagneticButton href="/shop" variant="burgundy">Shop Bouquets</MagneticButton>
               <MagneticButton href="/contact" variant="outline">Say Hello</MagneticButton>
+            </Reveal>
+            <Reveal delay={0.6}>
+              <p className="mt-12 text-[11px] tracking-[0.26em] text-rose uppercase">Find us online</p>
+              <a href={LIVE_URL} target="_blank" rel="noopener noreferrer" data-cursor="petal" className="mt-3 inline-flex items-center gap-3 border-b border-burgundy/40 pb-1 font-serif text-2xl text-burgundy transition-colors hover:border-burgundy sm:text-3xl">
+                {LIVE_URL.replace(/^https?:\/\//, "")}
+                <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true"><path d="M4 12L12 4M5 4h7v7" /></svg>
+              </a>
             </Reveal>
           </div>
         </section>

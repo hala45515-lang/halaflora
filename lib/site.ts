@@ -1,4 +1,7 @@
 /** Placeholder studio details. Replace with the real ones. */
+/** Public address of the live site. Swap for your own domain when you have one. */
+export const LIVE_URL = "https://halaflora.vercel.app";
+
 export const SITE = {
   email: "hello@halaflora.example",
   phone: "+1 (555) 010-2030",
